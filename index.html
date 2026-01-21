@@ -6,8 +6,9 @@
   <title>Max Wild — Flame Artist</title>
 
   <!--
-    System font stack. No external fonts.
-    Old‑school, light, monochrome.
+    Minimal, old‑school, monochrome.
+    System font only. White space does the grouping.
+    Thumbnails float gently; no central player.
   -->
   <style>
     :root {
@@ -32,31 +33,25 @@
 
     body {
       opacity: 0;
-      transform: translateY(6px);
       animation: fadeIn 600ms var(--ease) forwards;
     }
 
-    @keyframes fadeIn {
-      to { opacity: 1; transform: none; }
-    }
+    @keyframes fadeIn { to { opacity: 1; } }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-    }
-
-    a:hover { border-color: var(--fg); }
+    a { color: inherit; text-decoration: none; }
 
     .wrap {
-      max-width: 960px;
-      padding: 48px 24px 96px;
+      max-width: 1200px;
+      padding: 48px 24px 120px;
       margin: 0 auto;
     }
 
-    /* Header */
+    /* Name / title — lower third, left */
     header {
-      margin-bottom: 48px;
+      position: fixed;
+      left: 24px;
+      bottom: 18vh; /* lower third */
+      z-index: 5;
     }
 
     header h1 {
@@ -71,58 +66,78 @@
     }
 
     header nav {
-      margin-top: 16px;
+      margin-top: 12px;
       font-size: 0.9rem;
     }
 
-    /* Reel */
-    .reel {
-      margin-bottom: 56px;
-    }
+    header nav a { color: var(--muted); }
+    header nav a:hover { color: var(--fg); }
 
-    .video {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background: #f2f2f2;
-    }
-
-    .video iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
-
-    /* Credits */
+    /* Credits layout */
     .credits {
-      margin-top: 72px;
+      margin-top: 120px;
     }
 
     .group {
-      margin-bottom: 48px;
+      margin-bottom: 120px; /* proximity = grouping */
     }
 
     .group-title {
       font-size: 0.8rem;
       color: var(--muted);
-      margin-bottom: 12px;
+      margin-bottom: 24px;
     }
 
-    ul.work {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+    .cluster {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 48px 32px; /* loose, breathable */
     }
 
-    ul.work li {
-      padding: 6px 0;
+    /* Thumbnail card */
+    .work {
+      position: relative;
       cursor: pointer;
+      transform: translateY(0);
+      transition: transform 600ms var(--ease), box-shadow 600ms var(--ease);
+      animation: float 10s ease-in-out infinite;
     }
 
-    ul.work li:hover {
-      color: var(--muted);
+    /* Slight variation per item for organic motion */
+    .work:nth-child(odd) { animation-duration: 11s; }
+    .work:nth-child(3n) { animation-duration: 13s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .work:hover {
+      transform: translateY(-10px) scale(1.02);
+      z-index: 3;
+    }
+
+    .thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #f2f2f2;
+      overflow: hidden;
+    }
+
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 800ms var(--ease);
+    }
+
+    .work:hover img { transform: scale(1.04); }
+
+    .caption {
+      margin-top: 8px;
+      font-size: 0.9rem;
     }
 
     /* About popup */
@@ -134,12 +149,10 @@
       align-items: center;
       justify-content: center;
       padding: 24px;
+      z-index: 10;
     }
 
-    .overlay.open {
-      display: flex;
-      animation: fadeIn 300ms var(--ease);
-    }
+    .overlay.open { display: flex; }
 
     .about {
       max-width: 560px;
@@ -161,14 +174,18 @@
 
     .close:hover { color: var(--fg); }
 
-    @media (max-width: 600px) {
-      .wrap { padding-top: 32px; }
+    @media (max-width: 800px) {
+      header {
+        position: static;
+        margin-bottom: 48px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="wrap">
 
+    <!-- Name / title -->
     <header>
       <h1>Max Wild</h1>
       <p>Flame Artist / VFX</p>
@@ -177,52 +194,67 @@
       </nav>
     </header>
 
-    <!-- Reel -->
-    <section class="reel">
-      <div class="video">
-        <!--
-          MAIN REEL
-          Currently using a YouTube playlist embed (temporary).
-          You can swap this URL later without touching layout or JS.
-        -->
-        <iframe
-          id="player"
-          src="https://www.youtube.com/embed/videoseries?list=PLGnHzuGNwzxYdN5ZmMgbJT3kC3fwe0MEf"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        ></iframe>
-      </div>
-    </section>
-
-    <!-- Credits -->
+    <!-- Credits only — thumbnails, no central player -->
     <section class="credits">
 
       <div class="group">
         <div class="group-title">Lead Flame Artist</div>
-        <ul class="work">
-          <!-- Replace data-video with actual YouTube video IDs -->
-          <li data-video="VIDEO_ID_1">Title — Client</li>
-          <li data-video="VIDEO_ID_2">Title — Client</li>
-          <li data-video="VIDEO_ID_3">Title — Client</li>
-          <li data-video="VIDEO_ID_4">Title — Client</li>
-        </ul>
+        <div class="cluster">
+          <!-- Replace thumb.jpg + video URL -->
+          <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_1">
+            <div class="thumb"><img src="thumb1.jpg" alt="" /></div>
+            <div class="caption">Title — Client</div>
+          </div>
+          <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_2">
+            <div class="thumb"><img src="thumb2.jpg" alt="" /></div>
+            <div class="caption">Title — Client</div>
+          </div>
+          <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_3">
+            <div class="thumb"><img src="thumb3.jpg" alt="" /></div>
+            <div class="caption">Title — Client</div>
+          </div>
+          <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_4">
+            <div class="thumb"><img src="thumb4.jpg" alt="" /></div>
+            <div class="caption">Title — Client</div>
+          </div>
+        </div>
       </div>
 
       <div class="group">
         <div class="group-title">Flame Assist</div>
-        <ul class="work">
-          <li data-video="VIDEO_ID_5">Title — Client</li>
-          <li data-video="VIDEO_ID_6">Title — Client</li>
-          <li data-video="VIDEO_ID_7">Title — Client</li>
-          <li data-video="VIDEO_ID_8">Title — Client</li>
-          <li data-video="VIDEO_ID_9">Title — Client</li>
-          <li data-video="VIDEO_ID_10">Title — Client</li>
-          <li data-video="VIDEO_ID_11">Title — Client</li>
-        </ul>
+        <div class="cluster">
+          <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_5">
+            <div class="thumb"><img src="thumb5.jpg" alt="" /></div>
+            <div class="caption">Title — Client</div>
+          </div>
+          <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_6">
+            <div class="thumb"><img src="thumb6.jpg" alt="" /></div>
+            <div class="caption">Title — Client</div>
+          </div>
+          <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_7">
+            <div class="thumb"><img src="thumb7.jpg" alt="" /></div>
+            <div class="caption">Title — Client</div>
+          </div>
+          <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_8">
+            <div class="thumb"><img src="thumb8.jpg" alt="" /></div>
+            <div class="caption">Title — Client</div>
+          </div>
+          <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_9">
+            <div class="thumb"><img src="thumb9.jpg" alt="" /></div>
+            <div class="caption">Title — Client</div>
+          </div>
+          <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_10">
+            <div class="thumb"><img src="thumb10.jpg" alt="" /></div>
+            <div class="caption">Title — Client</div>
+          </div>
+          <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_11">
+            <div class="thumb"><img src="thumb11.jpg" alt="" /></div>
+            <div class="caption">Title — Client</div>
+          </div>
+        </div>
       </div>
 
     </section>
-
   </div>
 
   <!-- About overlay -->
@@ -254,22 +286,14 @@
       overlay.classList.add('open');
     });
 
-    closeBtn.addEventListener('click', () => {
-      overlay.classList.remove('open');
-    });
+    closeBtn.addEventListener('click', () => overlay.classList.remove('open'));
+    overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
 
-    overlay.addEventListener('click', e => {
-      if (e.target === overlay) overlay.classList.remove('open');
-    });
-
-    // Credit clicks swap the main video
-    const player = document.getElementById('player');
-    document.querySelectorAll('[data-video]').forEach(item => {
+    // Open videos in new tab when clicking thumbnails
+    document.querySelectorAll('.work').forEach(item => {
       item.addEventListener('click', () => {
-        const id = item.getAttribute('data-video');
-        if (!id || id.startsWith('VIDEO_ID')) return;
-        player.src = `https://www.youtube.com/embed/${id}`;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const url = item.getAttribute('data-url');
+        if (url && !url.includes('VIDEO_ID')) window.open(url, '_blank');
       });
     });
   </script>
