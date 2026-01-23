@@ -258,27 +258,6 @@
     </div>
   </div>
 
-  <script>
-    // About popup
-    const openBtn = document.getElementById('about-open');
-    const closeBtn = document.getElementById('about-close');
-    const overlay = document.getElementById('about');
-
-    openBtn.addEventListener('click', e => {
-      e.preventDefault();
-      overlay.classList.add('open');
-    });
-
-    closeBtn.addEventListener('click', () => overlay.classList.remove('open'));
-    overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
-
-    // Open videos in new tab when clicking thumbnails
-    document.querySelectorAll('.work').forEach(item => {
-      item.addEventListener('click', () => {
-        const url = item.getAttribute('data-url');
-        if (url && !url.includes('VIDEO_ID')) window.open(url, '_blank');
-      });
-    });
 
 <script>
   // ABOUT POPUP
