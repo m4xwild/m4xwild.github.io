@@ -98,49 +98,30 @@
     }
 
     /* Thumbnail card */
-    .work {
-      position: relative;
-      cursor: pointer;
-      transform: translateY(0);
-      transition: transform 600ms var(--ease), box-shadow 600ms var(--ease);
-      animation: float 10s ease-in-out infinite;
-    }
+.work {
+  width: 260px;
+  cursor: pointer;
+}
 
-    /* Slight variation per item for organic motion */
-    .work:nth-child(odd) { animation-duration: 8s; }
-    .work:nth-child(3n) { animation-duration: 11s; }
+.thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 0.4rem;
+  border-radius: 2px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
-    }
+.work:hover .thumb {
+  transform: scale(1.03);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
 
-    .work:hover {
-      transform: translateY(-10px) scale(1.02);
-      z-index: 3;
-    }
-
-    .thumb {
-      width: 80%;
-      aspect-ratio: 16 / 9;
-      background: #f2f2f2;
-      overflow: hidden;
-    }
-
-    .thumb img {
-      width: 80%;
-      height: 80%;
-      object-fit: cover;
-      display: block;
-      transition: transform 800ms var(--ease);
-    }
-
-    .work:hover img { transform: scale(1.04); }
-
-    .caption {
-      margin-top: 8px;
-      font-size: 0.9rem;
-    }
+.caption {
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
 
     /* About popup */
     .overlay {
@@ -204,19 +185,19 @@
         <div class="cluster">
           <!-- Replace thumb.jpg + video URL -->
           <div class="work" data-url="https://www.youtube.com/watch?v=pG_7z6eJmr4">
-            <div class="thumb"><img src="thumb1.jpg" alt="" /></div>
+            <div class="thumb"></div>
             <div class="caption">Tourism NZ — If You Seek Stories</div>
           </div>
           <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_2">
-            <div class="thumb"><img src="thumb2.jpg" alt="" /></div>
+            <div class="thumb"></div>
             <div class="caption">Title — Client</div>
           </div>
           <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_3">
-            <div class="thumb"><img src="thumb3.jpg" alt="" /></div>
+            <div class="thumb"></div>
             <div class="caption">Title — Client</div>
           </div>
           <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_4">
-            <div class="thumb"><img src="thumb4.jpg" alt="" /></div>
+            <div class="thumb"></div>
             <div class="caption">Title — Client</div>
           </div>
         </div>
@@ -226,31 +207,31 @@
         <div class="group-title">Flame Assist</div>
         <div class="cluster">
           <div class="work" data-url="https://vimeo.com/1157423712?fl=pl&fe=sh">
-            <div class="thumb"><img src="thumb5.jpg" alt="" /></div>
+            <div class="thumb"></div>
             <div class="caption">LEGO — Play Unstoppable</div>
           </div>
           <div class="work" data-url="https://www.youtube.com/watch?v=q4xceCs_4Vk">
-            <div class="thumb"><img src="thumb6.jpg" alt="" /></div>
+            <div class="thumb"></div>
             <div class="caption">Commbank — Doubt Never Did</div>
           </div>
           <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_7">
-            <div class="thumb"><img src="thumb7.jpg" alt="" /></div>
+            <div class="thumb"></div>
             <div class="caption">Title — Client</div>
           </div>
           <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_8">
-            <div class="thumb"><img src="thumb8.jpg" alt="" /></div>
+            <div class="thumb"></div>
             <div class="caption">Title — Client</div>
           </div>
           <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_9">
-            <div class="thumb"><img src="thumb9.jpg" alt="" /></div>
+            <div class="thumb"></div>
             <div class="caption">Title — Client</div>
           </div>
           <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_10">
-            <div class="thumb"><img src="thumb10.jpg" alt="" /></div>
+           <div class="thumb"></div>
             <div class="caption">Title — Client</div>
           </div>
           <div class="work" data-url="https://www.youtube.com/watch?v=VIDEO_ID_11">
-            <div class="thumb"><img src="thumb11.jpg" alt="" /></div>
+            <div class="thumb"></div>
             <div class="caption">Title — Client</div>
           </div>
         </div>
@@ -297,6 +278,21 @@
         if (url && !url.includes('VIDEO_ID')) window.open(url, '_blank');
       });
     });
+
+// Thumbnails JS
+    
+    document.querySelectorAll('.work').forEach(work => {
+  const id = work.dataset.id;
+  const thumb = work.querySelector('.thumb');
+
+  thumb.style.backgroundImage =
+    `url(https://img.youtube.com/vi/${id}/hqdefault.jpg)`;
+
+  work.addEventListener('click', () => {
+    window.open(`https://www.youtube.com/watch?v=${id}`, '_blank');
+  });
+});
+    
   </script>
 </body>
 </html>
