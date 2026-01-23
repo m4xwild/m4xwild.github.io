@@ -164,6 +164,34 @@
       margin-top: 0;
     }
 
+    .many-more-popup {
+      position: fixed;
+      bottom: 6vh;      /* a little above bottom */
+      right: 24px;      /* right-hand side */
+      z-index: 5;
+      background: var(--thumb-bg);
+      color: var(--fg);
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: transform 0.2s var(--ease), background 0.2s var(--ease);
+    }
+
+    .many-more-popup:hover {
+      background: var(--muted);
+      transform: scale(1.05);
+    }
+
+    #many-more-overlay {
+      background: rgba(14,14,14,0.96);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 10;
+    }
+
     .close {
       display: inline-block;
       margin-top: 24px;
@@ -270,6 +298,17 @@
     </div>
   </div>
 
+  <!-- Many More popup -->
+<div class="many-more-popup" id="many-more">
+  and many more...
+</div>
+
+<div class="overlay" id="many-more-overlay">
+  <div class="about">
+    <p>That hasn't made it to the website.</p>
+    <div class="close" id="many-more-close">Close</div>
+  </div>
+</div>
 
 <script>
 // ABOUT POPUP
@@ -285,6 +324,23 @@
   closeBtn.addEventListener('click', () => overlay.classList.remove('open'));
   overlay.addEventListener('click', e => {
     if (e.target === overlay) overlay.classList.remove('open');
+  });
+
+// Many More popup
+  const manyMoreBtn = document.getElementById('many-more');
+  const manyMoreOverlay = document.getElementById('many-more-overlay');
+  const manyMoreClose = document.getElementById('many-more-close');
+
+  manyMoreBtn.addEventListener('click', () => {
+    manyMoreOverlay.classList.add('open');
+  });
+
+  manyMoreClose.addEventListener('click', () => {
+    manyMoreOverlay.classList.remove('open');
+  });
+
+  manyMoreOverlay.addEventListener('click', e => {
+    if (e.target === manyMoreOverlay) manyMoreOverlay.classList.remove('open');
   });
 
   // THUMBNAILS (YouTube + Vimeo)
