@@ -279,8 +279,6 @@
       });
     });
 
-// Thumbnails JS
-    
 <script>
   // About popup
   const openBtn = document.getElementById('about-open');
@@ -304,10 +302,9 @@
 
     if (!url || !thumb) return;
 
-    // YouTube thumbnail support
+    // YouTube thumbnails
     if (url.includes('youtube.com')) {
       const id = new URL(url).searchParams.get('v');
-
       if (id) {
         thumb.style.backgroundImage =
           `url(https://img.youtube.com/vi/${id}/hqdefault.jpg)`;
