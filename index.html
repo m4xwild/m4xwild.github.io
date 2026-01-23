@@ -102,16 +102,21 @@
   width: 260px;
   cursor: pointer;
 }
+.work:hover {
+  z-index: 3;
+}
 
 .thumb {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 3;
   background-size: cover;
   background-position: center;
   background-color: #f2f2f2;
   margin-bottom: 0.4rem;
   border-radius: 2px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.35s var(--ease),
+    box-shadow 0.35s var(--ease);
 }
 
 .work:hover .thumb {
@@ -256,7 +261,7 @@
 
 
 <script>
-   // ABOUT POPUP
+// ABOUT POPUP
   const openBtn = document.getElementById('about-open');
   const closeBtn = document.getElementById('about-close');
   const overlay = document.getElementById('about');
@@ -272,12 +277,14 @@
   });
 
   // THUMBNAILS (YouTube + Vimeo)
-  document.querySelectorAll('.work').forEach(async work => {
+  const works = document.querySelectorAll('.work');
+
+  works.forEach(async work => {
     const url = work.dataset.url;
     const thumb = work.querySelector('.thumb');
     if (!url || !thumb) return;
 
-    // YOUTUBE
+    // YouTube
     if (url.includes('youtube.com')) {
       const id = new URL(url).searchParams.get('v');
       if (id) {
@@ -286,7 +293,7 @@
       }
     }
 
-    // VIMEO
+    // Vimeo
     if (url.includes('vimeo.com')) {
       try {
         const res = await fetch(
@@ -296,18 +303,42 @@
         if (data.thumbnail_url) {
           thumb.style.backgroundImage = `url(${data.thumbnail_url})`;
         }
-      } catch (e) {
-        console.warn('Vimeo thumbnail failed:', url);
-      }
+      } catch (_) {}
     }
 
-    // CLICK → OPEN VIDEO
+    // Click opens video
     work.addEventListener('click', () => {
       if (!url.includes('VIDEO_ID')) {
         window.open(url, '_blank');
       }
     });
   });
+
+  // FLOATING CLUSTER MOTION
+  const floats = Array.from(works).map(el => ({
+    el,
+    x: (Math.random() - 0.5) * 12,
+    y: (Math.random() - 0.5) * 12,
+    speedX: (Math.random() - 0.5) * 0.015,
+    speedY: (Math.random() - 0.5) * 0.015
+  }));
+
+  function animate() {
+    floats.forEach(f => {
+      f.x += f.speedX;
+      f.y += f.speedY;
+
+      // soft bounds so nothing drifts away
+      if (Math.abs(f.x) > 14) f.speedX *= -1;
+      if (Math.abs(f.y) > 14) f.speedY *= -1;
+
+      f.el.style.transform = `translate(${f.x}px, ${f.y}px)`;
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
 </script>
 
 </body>
