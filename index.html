@@ -11,13 +11,14 @@
     Thumbnails float gently; no central player.
   -->
   <style>
-    :root {
-      --bg: #ffffff;
-      --fg: #111111;
-      --muted: #666666;
-      --border: #e6e6e6;
-      --ease: cubic-bezier(.2,.6,.2,1);
-    }
+:root {
+  --bg: #0e0e0e;
+  --fg: #eaeaea;
+  --muted: #8a8a8a;
+  --border: #1f1f1f;
+  --thumb-bg: #1a1a1a;
+  --ease: cubic-bezier(.2,.6,.2,1);
+}
 
     * { box-sizing: border-box; }
 
@@ -101,6 +102,7 @@
 .work {
   width: 260px;
   cursor: pointer;
+  position: relative;
 }
 .work:hover {
   z-index: 3;
@@ -108,12 +110,15 @@
 
 .thumb {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 3;
   background-size: cover;
   background-position: center;
-  background-color: #f2f2f2;
+  background-color: var(--thumb-bg);
   margin-bottom: 0.4rem;
   border-radius: 2px;
+  position: relative;
+  z-index: 1;
+
   transition:
     transform 0.35s var(--ease),
     box-shadow 0.35s var(--ease);
@@ -127,13 +132,15 @@
 .caption {
   font-size: 0.85rem;
   letter-spacing: 0.02em;
+  position: relative;
+  z-index: 2;
 }
 
     /* About popup */
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(255,255,255,0.96);
+      background: rgba(14,14,14,0.96);
       display: none;
       align-items: center;
       justify-content: center;
@@ -332,8 +339,10 @@
       if (Math.abs(f.x) > 14) f.speedX *= -1;
       if (Math.abs(f.y) > 14) f.speedY *= -1;
 
-      f.el.style.transform = `translate(${f.x}px, ${f.y}px)`;
-    });
+  const thumb = f.el.querySelector('.thumb');
+  if (thumb) {
+  thumb.style.transform = `translate(${f.x}px, ${f.y}px)`;
+  }
 
     requestAnimationFrame(animate);
   }
