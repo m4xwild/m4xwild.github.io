@@ -108,6 +108,7 @@
   aspect-ratio: 16 / 9;
   background-size: cover;
   background-position: center;
+  background-color: #f2f2f2;
   margin-bottom: 0.4rem;
   border-radius: 2px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -280,7 +281,7 @@
     });
 
 <script>
-  // About popup
+  // ABOUT POPUP
   const openBtn = document.getElementById('about-open');
   const closeBtn = document.getElementById('about-close');
   const overlay = document.getElementById('about');
@@ -295,14 +296,13 @@
     if (e.target === overlay) overlay.classList.remove('open');
   });
 
-  // Thumbnails + click handling
+  // THUMBNAILS
   document.querySelectorAll('.work').forEach(work => {
     const url = work.dataset.url;
     const thumb = work.querySelector('.thumb');
-
     if (!url || !thumb) return;
 
-    // YouTube thumbnails
+    // YouTube thumbnail
     if (url.includes('youtube.com')) {
       const id = new URL(url).searchParams.get('v');
       if (id) {
@@ -311,7 +311,7 @@
       }
     }
 
-    // Click opens video
+    // Click behavior
     work.addEventListener('click', () => {
       if (!url.includes('VIDEO_ID')) {
         window.open(url, '_blank');
@@ -319,5 +319,6 @@
     });
   });
 </script>
+
 </body>
 </html>
