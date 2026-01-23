@@ -103,6 +103,8 @@
   width: 260px;
   cursor: pointer;
   position: relative;
+  pointer-events: auto;
+  will-change: transform;
 }
 .work:hover {
   z-index: 3;
@@ -322,32 +324,29 @@
   });
 
   // FLOATING CLUSTER MOTION
-  const floats = Array.from(works).map(el => ({
-    el,
-    x: (Math.random() - 0.5) * 12,
-    y: (Math.random() - 0.5) * 12,
-    speedX: (Math.random() - 0.5) * 0.015,
-    speedY: (Math.random() - 0.5) * 0.015
-  }));
+const floats = Array.from(works).map(el => ({
+  el,
+  x: (Math.random() - 0.5) * 16,
+  y: (Math.random() - 0.5) * 16,
+  speedX: (Math.random() - 0.5) * 0.02,
+  speedY: (Math.random() - 0.5) * 0.02
+}));
 
-  function animate() {
-    floats.forEach(f => {
-      f.x += f.speedX;
-      f.y += f.speedY;
+function animate() {
+  floats.forEach(f => {
+    f.x += f.speedX;
+    f.y += f.speedY;
 
-      // soft bounds so nothing drifts away
-      if (Math.abs(f.x) > 14) f.speedX *= -1;
-      if (Math.abs(f.y) > 14) f.speedY *= -1;
+    if (Math.abs(f.x) > 18) f.speedX *= -1;
+    if (Math.abs(f.y) > 18) f.speedY *= -1;
 
-  const thumb = f.el.querySelector('.thumb');
-  if (thumb) {
-  thumb.style.transform = `translate(${f.x}px, ${f.y}px)`;
-  }
+    f.el.style.transform = `translate(${f.x}px, ${f.y}px)`;
+  });
 
-    requestAnimationFrame(animate);
-  }
+  requestAnimationFrame(animate);
+}
 
-  animate();
+animate();
 </script>
 
 </body>
